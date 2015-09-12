@@ -4,6 +4,9 @@ Compatible with Mac and PC, he is able to render complex real time 3D scene full
 He have an intuitive interface thinked like a DJ solution, 2 channels of real time effects and a master pannel for mixing theses.
 Midi controllers is supported.
 
+
+<img src="http://www.aduprat.com/pub/vls.jpg">
+
 More details soon.
 
 ## Setup:
