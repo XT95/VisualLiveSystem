@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Scene>
+	<param id="0" value=""/>
+	<param id="1" value=""/>
+	<param id="2" value=""/>
+	<param id="3" value=""/>
+
+	<layer id="0" value="Scene.glsl"/>
+</Scene>

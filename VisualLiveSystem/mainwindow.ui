@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>893</width>
+    <height>597</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Visual Live System</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="res.qrc">
+    <normaloff>:/res/img/vls.png</normaloff>:/res/img/vls.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>2</number>
+    </property>
+    <property name="margin">
+     <number>2</number>
+    </property>
+    <item>
+     <widget class="RenderWidget" name="widget" native="true"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>893</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuWindow">
+    <property name="title">
+     <string>Window</string>
+    </property>
+    <addaction name="actionPreferences"/>
+    <addaction name="actionProjector"/>
+    <addaction name="separator"/>
+    <addaction name="actionSound_manager"/>
+    <addaction name="actionVisual_Manager"/>
+    <addaction name="actionControllers_manager"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuWindow"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <action name="actionSound_manager">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res/img/music.png</normaloff>:/res/img/music.png</iconset>
+   </property>
+   <property name="text">
+    <string>Sound manager</string>
+   </property>
+  </action>
+  <action name="actionOpen_micro_record">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res/img/micro.png</normaloff>:/res/img/micro.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open micro record...</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res/img/setting.png</normaloff>:/res/img/setting.png</iconset>
+   </property>
+   <property name="text">
+    <string>Preferences</string>
+   </property>
+  </action>
+  <action name="actionProjector">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res/img/projector.png</normaloff>:/res/img/projector.png</iconset>
+   </property>
+   <property name="text">
+    <string>Projector</string>
+   </property>
+  </action>
+  <action name="actionVisual_Manager">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res/img/setting_visual.png</normaloff>:/res/img/setting_visual.png</iconset>
+   </property>
+   <property name="text">
+    <string>Visual manager</string>
+   </property>
+  </action>
+  <action name="actionControllers_manager">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/res/img/setting2.png</normaloff>:/res/img/setting2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Controllers manager</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>RenderWidget</class>
+   <extends>QWidget</extends>
+   <header>renderwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
+ <connections/>
+</ui>

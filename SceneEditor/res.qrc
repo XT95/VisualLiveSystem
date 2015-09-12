@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/img/micro.png</file>
+        <file>res/img/music.png</file>
+        <file>res/img/new.png</file>
+        <file>res/img/open.png</file>
+        <file>res/img/save.png</file>
+        <file>res/img/setting.png</file>
+        <file>res/img/setting2.png</file>
+        <file>res/img/setting_visual.png</file>
+        <file>res/img/vls.png</file>
+        <file>res/img/projector.png</file>
+        <file>res/framework/Empty/config.xml</file>
+        <file>res/framework/Empty/Scene.glsl</file>
+        <file>res/framework/DF/config.xml</file>
+        <file>res/framework/DF/Scene.glsl</file>
+        <file>res/framework/Raytracing/config.xml</file>
+        <file>res/framework/Raytracing/Scene.glsl</file>
+        <file>res/img/new shader.png</file>
+        <file>res/img/camera.png</file>
+        <file>res/img/screenshot.png</file>
+        <file>res/framework/Layer/layer.glsl</file>
+    </qresource>
+</RCC>

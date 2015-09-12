@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/img/micro.png</file>
+        <file>res/img/music.png</file>
+        <file>res/img/new.png</file>
+        <file>res/img/open.png</file>
+        <file>res/img/save.png</file>
+        <file>res/img/setting.png</file>
+        <file>res/img/setting2.png</file>
+        <file>res/img/setting_visual.png</file>
+        <file>res/img/vls.png</file>
+        <file>res/img/projector.png</file>
+        <file>res/shaders/open.glsl</file>
+        <file>res/shaders/postprocess.glsl</file>
+        <file>res/shaders/audiovisualizer.glsl</file>
+    </qresource>
+</RCC>
