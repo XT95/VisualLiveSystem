@@ -1,6 +1,6 @@
-
+﻿
 #include <GL/glew.h>
-
+#include <cstdlib> //fix the NULL undeclared
 
 
 #define BUFFER_OFFSET(a) ((char*)NULL + (a))

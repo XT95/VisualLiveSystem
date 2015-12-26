@@ -12,15 +12,18 @@ More details soon.
 ## Setup:
 
 Dependencies:
-* [qt 4.8](http://download.qt.io/archive/qt/4.8/4.8.4/)
+* [qt 5](http://www.qt.io/download/)
 * [bass](http://www.un4seen.com/)
-* [bassflac](http://www.un4seen.com/)
 * [rtaudio](https://www.music.mcgill.ca/~gary/rtaudio/)
 * [portmidi](http://portmedia.sourceforge.net/portmidi/)
 * [glew](http://glew.sourceforge.net/)
 
 
+
 Compile:
+ * Clone this repo with '''git clone --recursive https://github.com/XT95/VisualLiveSystem.git''' this will download somes depancies automatically
+ * Download glew (currently using glew-1.13.0 shall be updated to the lastest version) paste the glew-1.13.0 folder into the depends folder. 
+ * Copy the correct libs (32 or 64 bits) into the "depends/lib" directory (ex: glew32.lib rtaudio_static.lib and portmidi_s.lib for Visual Studio)
  * Open /VisualLiveSystem/VisualLiveSystem.pro with Qt Creator, setup the binary output to /release and compil it.
  * You can do the same thing with /SceneEditor.
 

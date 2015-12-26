@@ -1,4 +1,4 @@
-
+﻿
 
 #ifndef DECODER___
 #define DECODER___
@@ -36,8 +36,7 @@ signals:
 
 };
 
-#include "signal/bass.h"
-#include "signal/bassflac.h"
+#include "signal/bassproc.h"
 
 class BassDecoder : public Decoder
 {

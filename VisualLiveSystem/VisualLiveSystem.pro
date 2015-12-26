@@ -11,10 +11,16 @@ TEMPLATE = app
 
 RC_FILE = ressource.rc
 
-INCLUDEPATH += C:/Coding/Librarys/include
-LIBS        += -LC:/Coding/Librarys/lib/32
+INCLUDEPATH += "../depends/rtaudio" "../depends/glew-1.13.0/include" "../depends/portmidi/porttime" "../depends/portmidi/pm_common"
 
-LIBS += -lrtaudio -lportmidi -lwinmm -lole32 -lGLEW32 -ldsound -lbass -lbassflac
+debug {
+LIBS += -L"../depends/lib" -lrtaudio_staticd -lportmidi_sd -lwinmm -lole32 -lglew32 -ldsound -ladvapi32 -luser32 -lopengl32
+}
+
+release {
+LIBS += -L"../depends/lib" -lrtaudio_static -lportmidi_s -lwinmm -lole32 -lglew32 -ldsound -ladvapi32 -luser32 -lopengl32
+}
+
 SOURCES += main.cpp\
         mainwindow.cpp \
     renderwidget.cpp \
@@ -40,7 +46,8 @@ SOURCES += main.cpp\
     signal/signal.cpp \
     signal/basserrorhandler.cpp \
     signal/audiopipe.cpp \
-    signal/fft.cpp
+    signal/fft.cpp  \
+    signal/bassproc.c
 
 HEADERS  += mainwindow.h \
     renderwidget.h \
@@ -62,13 +69,12 @@ HEADERS  += mainwindow.h \
     transition.h \
     FFTAnalyzer.h \
     audiovisualizer.h \
-    signal/bass.h \
-    signal/bassflac.h \
     signal/decoder.hpp \
     signal/signal.hpp \
     signal/basserrorhandler.hpp \
     signal/audiopipe.hpp \
-    signal/fft.hpp
+    signal/fft.hpp \
+    signal/bassproc.h
 
 FORMS    += mainwindow.ui \
     channelwidget.ui \

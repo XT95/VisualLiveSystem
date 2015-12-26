@@ -1,4 +1,4 @@
-#include <QtGui/QApplication>
+﻿#include <QApplication>
 #include <QFile>
 #include <QTextStream>
 #include "mainwindow.h"

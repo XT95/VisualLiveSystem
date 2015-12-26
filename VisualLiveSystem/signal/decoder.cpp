@@ -1,7 +1,8 @@
-#include "signal/decoder.hpp"
+﻿#include "signal/decoder.hpp"
 #include "signal/basserrorhandler.hpp"
 
 #include <iostream>
+#include <assert.h>
 
 #include <QMessageBox>
 
@@ -13,7 +14,10 @@ _ended(true),
 _bytesStep(0),
 _samplesForSignals(0)
 {
-  if (!BASS_Init(0,Signal::frequency,0,0,0))
+  int proc_loaded = load_bass_procs("bass.dll");
+  std::cerr << proc_loaded << " loaded from bass.dll" << std::endl;
+
+  if (!BASS_EnsureBassInit(0,Signal::frequency,0))
   {
 	  std::cerr << "error : " << handleBassInitError() << std::endl;
       QMessageBox::critical(0,QString("BASS Error"),QString::fromStdString(handleBassInitError()),QMessageBox::Ok,QMessageBox::Ok);
@@ -56,15 +60,7 @@ bool BassDecoder::open(QString filename)
 	{
 		_mod=false;
 	}
-    else if (_music=(HANDLE)BASS_FLAC_StreamCreateFile(FALSE, (void*) filename.toStdString().c_str(), 0,0,BASS_STREAM_PRESCAN | BASS_STREAM_DECODE | BASS_SAMPLE_FLOAT))
-	{
-		_mod=false;
-	}
     else if (_music=(HANDLE)BASS_StreamCreateURL(filename.toStdString().c_str(),0,BASS_STREAM_DECODE | BASS_SAMPLE_FLOAT, (DOWNLOADPROC*) 0,(void*)0))
-	{
-		_mod=false;
-	}
-    else if (_music=(HANDLE)BASS_FLAC_StreamCreateURL(filename.toStdString().c_str(),0,BASS_STREAM_DECODE | BASS_SAMPLE_FLOAT, (DOWNLOADPROC*) 0,(void*)0))
 	{
 		_mod=false;
 	}

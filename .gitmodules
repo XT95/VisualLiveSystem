@@ -1,3 +1,6 @@
 [submodule "depends/rtaudio"]
 	path = depends/rtaudio
 	url = https://github.com/thestk/rtaudio
+[submodule "depends/portmidi"]
+	path = depends/portmidi
+	url = https://github.com/lamogui/portmidi

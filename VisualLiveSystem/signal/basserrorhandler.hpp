@@ -1,12 +1,7 @@
-
+﻿
 #include <string>
-#include "signal/bass.h"
+#include "signal/bassproc.h"
 
-#if defined(COMPILE_WINDOWS)
-#include <bassasio.h>
-std::string handleBassAsioInitError();
-std::string handleBassAsioStartError();
-#endif
 
 std::string handleBassInitError();
 std::string handleBassStreamCreateError();
