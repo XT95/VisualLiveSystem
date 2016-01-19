@@ -57,8 +57,8 @@ AudioPipe::AudioPipe(QObject *parent) :
     connect(this,SIGNAL(critical_error(QString,QString)),SLOT(show_critical(QString,QString)));
 
 
-    _latencySignalsR.resize(Signal::refreshRate * 60 /(30.0));
-    _latencySignalsL.resize(Signal::refreshRate * 60 /(30.0));
+    _latencySignalsR.resize(Signal::refreshRate * 60 /(BPM_MIN));
+    _latencySignalsL.resize(Signal::refreshRate * 60 /(BPM_MIN));
     _latencyTimeBuffer = 0;
     _latencyCurrentBuffer = 0;
 
