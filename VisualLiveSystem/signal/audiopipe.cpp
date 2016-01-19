@@ -4,6 +4,8 @@
 #include <QMessageBox>
 #include <algorithm>
 
+#define BPM_MIN 30.0;
+
 QString RtAudioApiToQString(RtAudio::Api api)
 {
     switch (api) {
@@ -53,6 +55,12 @@ AudioPipe::AudioPipe(QObject *parent) :
 
     std::cout << "pouet" << std::endl;
     connect(this,SIGNAL(critical_error(QString,QString)),SLOT(show_critical(QString,QString)));
+
+
+    _latencySignalsR.resize(Signal::refreshRate * 60 /(30.0));
+    _latencySignalsL.resize(Signal::refreshRate * 60 /(30.0));
+    _latencyTimeBuffer = 0;
+    _latencyCurrentBuffer = 0;
 
 }
 
@@ -190,6 +198,21 @@ void AudioPipe::setApi(RtAudio::Api api)
 }
 
 
+void AudioPipe::setLatenyTime(float sec)
+{
+  int n = (int)(sec*(float)Signal::refreshRate);
+  if (n > _latencySignalsL.size())
+  {
+    n = _latencySignalsL.size()-1;
+  }
+  else if (n <= 0.f)
+  {
+    n = 0;
+  }
+  _latencyTimeBuffer = n;
+
+}
+
 int AudioPipe::rtaudio_callback( void *outputBuffer, void *inputBuffer, unsigned int nBufferFrames,
                                  double streamTime, RtAudioStreamStatus status, void *data )
 {
@@ -198,44 +221,98 @@ int AudioPipe::rtaudio_callback( void *outputBuffer, void *inputBuffer, unsigned
     const unsigned int size = nBufferFrames > Signal::size ? Signal::size : nBufferFrames;
 
 
-    pipe->_mutexMixer.lock();
-    if (pipe->_mixer) {//A t'on quelque chose à mixer avec le signal sonnore de sortie ?
+    if (_latencyTimeBuffer)
+    {
+
+      unsigned int k=0;
+      unsigned int rb=_(latencyCurrentBuffer+_latencyTimeBuffer)%_latencySignalsL.size();
+      if (inputBuffer)
+      {
+
+        //On enregistre le signal recu pour le diffuser plus tard
+        Signal* recordR = &(_latencySignalsR[rb]);
+        Signal* recordL = &(_latencySignalsL[rb]);
+        for (unsigned int i=0; i< size; ++i) {
+
+          recordR->samples[i] = ((sample*) inputBuffer)[k++];
+          recordL->samples[i] = ((sample*) inputBuffer)[k++];
+        }
+
+        //On envois le signal retarder pour traitment fft etc...
+        pipe->_mutexIO.lock();
+        Signal* playR = &(_latencySignalsR[_latencyCurrentBuffer]);
+        Signal* playL = &(_latencySignalsL[_latencyCurrentBuffer]);
+        if (inputBuffer) {
+          k=0;
+          for (unsigned int i=0; i< size; ++i) {
+            pipe->_leftOut.samples[i] = (playL->samples)[k++];
+            pipe->_rightOut.samples[i] = (playR->samples)[k++];
+          }
+        }
+        pipe->_mutexIO.unlock();
+
+
+        //Trash fix du coup j'ai la flemme de comprendre le code de tt
+        //facons tu n'as pas besoin de son
+        //donc j,envois du silence dans les hp ;-)
+        if (outputBuffer) {
+          k=0;
+          for (unsigned int i=0; i< size; ++i) {
+            ((sample*) outputBuffer)[k++] = 0.0;
+            ((sample*) outputBuffer)[k++] = 0.0;
+          }
+        }
+
+        //On avance dans le temp.
+        _latencyCurrentBuffer++;
+        if (_latencyCurrentBuffer>=_latencySignalsL.size())
+        {
+          _latencyCurrentBuffer=0;
+        }
+      }
+    }
+    else  //Normalement y a plein de trucs a gerer pour pouvoir jouer la music depuis
+       /// la playlist mais bon pour le concert on s'en fou...
+    {
+      pipe->_mutexMixer.lock();
+      if (pipe->_mixer) {//A t'on quelque chose à mixer avec le signal sonnore de sortie ?
         unsigned int k=0;
         if (inputBuffer) {
-            for (unsigned int i=0; i< size; ++i) {
-                pipe->_leftIn.samples[i] = ((sample*) inputBuffer)[k++];
-                pipe->_rightIn.samples[i] = ((sample*) inputBuffer)[k++];
-            }
+          for (unsigned int i=0; i< size; ++i) {
+            pipe->_leftIn.samples[i] = ((sample*) inputBuffer)[k++];
+            pipe->_rightIn.samples[i] = ((sample*) inputBuffer)[k++];
+          }
         }
         pipe->_mutexIO.lock();
         pipe->_mixer->step(pipe->_leftIn,pipe->_rightIn,pipe->_leftOut,pipe->_rightOut);
         pipe->_mutexIO.unlock();
         pipe->_mutexMixer.unlock();
-         if (outputBuffer) {
-            k=0;
-            for (unsigned int i=0; i< size; ++i) {
-                ((sample*) outputBuffer)[k++] = pipe->_leftOut.samples[i];
-                ((sample*) outputBuffer)[k++] = pipe->_rightOut.samples[i];
-            }
-         }
-    } else {
+        if (outputBuffer) {
+          k=0;
+          for (unsigned int i=0; i< size; ++i) {
+            ((sample*) outputBuffer)[k++] = pipe->_leftOut.samples[i];
+            ((sample*) outputBuffer)[k++] = pipe->_rightOut.samples[i];
+          }
+        }
+      } else {
         pipe->_mutexMixer.unlock();
         unsigned int k=0;
         pipe->_mutexIO.lock();
         if (inputBuffer) {
-            for (unsigned int i=0; i< size; ++i) {
-                pipe->_leftOut.samples[i] = ((sample*) inputBuffer)[k++];
-                pipe->_leftOut.samples[i] = ((sample*) inputBuffer)[k++];
-            }
+          for (unsigned int i=0; i< size; ++i) {
+            pipe->_leftOut.samples[i] = ((sample*) inputBuffer)[k++];
+            pipe->_rightOut.samples[i] = ((sample*) inputBuffer)[k++];
+          }
         }
         pipe->_mutexIO.unlock();
 
         //Dans le cas ou je n'ai pas de mixage autant balancer directement la sortie
         // on gagne Signal::size de latence
         if (outputBuffer && inputBuffer && !pipe->_mixer) {
-            unsigned long bytes = nBufferFrames * 2 * sizeof(float);
-            memcpy( outputBuffer, inputBuffer, bytes);
+          unsigned long bytes = nBufferFrames * 2 * sizeof(float);
+          memcpy( outputBuffer, inputBuffer, bytes);
         }
+      }
     }
     pipe->_contidionIO.wakeAll();
     return 0;

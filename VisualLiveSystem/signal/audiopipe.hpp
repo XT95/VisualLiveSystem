@@ -15,6 +15,7 @@ Licence ..... : © Copydown™
 #include <QMutex>
 #include <QWaitCondition>
 #include <QSemaphore>
+#include <vector>
 
 #include "signal/signal.hpp"
 
@@ -54,6 +55,9 @@ public slots:
                  //sur la configuration de l'OBJET
     void prepare();
 
+    void setLatenyTime(float sec);
+
+
 
 protected:
     //Thread de calcul (peut être lent)
@@ -64,6 +68,11 @@ private slots:
 
 private:
     inline long getStreamLatency() { return _driver->getStreamLatency(); }
+
+    std::vector<Signal> _latencySignalsR;
+    std::vector<Signal> _latencySignalsL;
+    int _latencyTimeBuffer;
+    int _latencyCurrentBuffer;
 
     //Callback RtAudio (doit être le plus rapide possible)
     static int rtaudio_callback( void *outputBuffer, void *inputBuffer, unsigned int nBufferFrames, double streamTime, RtAudioStreamStatus status, void *data );
